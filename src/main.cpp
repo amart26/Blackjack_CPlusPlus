@@ -124,7 +124,9 @@ int main()
     SDL_Log("Window created successfully");
     SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
     SDL_SetRenderVSync(renderer, 1);
+
     TTF_Font* font = TTF_OpenFont("assets/fonts/OpenSans.ttf", 24);
+    TTF_Font* smallFont = TTF_OpenFont("assets/fonts/OpenSans.ttf", 16);
     if (font == nullptr)
     {
         SDL_Log("Font failed to laod: %s", SDL_GetError());
@@ -226,9 +228,26 @@ int main()
         SDL_SetRenderDrawColorFloat(renderer, 0.13f, 0.33f, 0.13f, 1.0f);
         SDL_RenderClear(renderer);
 
+        // BUTTONS
+        SDL_FRect hitButton = {300, 500, 80, 40};
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+        SDL_RenderFillRect(renderer, &hitButton);
+
+        SDL_FRect standButton = {420, 500, 80, 40};
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+        SDL_RenderFillRect(renderer, &standButton);
+
+        if (gameState == GameState::GAME_OVER)
+        {
+            SDL_FRect playAgainButton = {340, 260, 120, 40};
+            SDL_SetRenderDrawColor(renderer, 250, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &playAgainButton);
+        }
+
         // GLOBAL TEXT
         float textW, textH;
         SDL_Color white = {255, 255, 255, 255};
+        SDL_Color black = {0, 0, 0, 255};
 
         // PLAYER SCORE TEXT
         std::string playerText = "Player " + std::to_string(playerScore);
@@ -255,20 +274,50 @@ int main()
         SDL_DestroySurface(dealerSurface);
         SDL_DestroyTexture(dealerTexture);
 
+        // HIT BUTTON TEXT
+        std::string hitButtonText = "HIT";
+        SDL_Surface* hitButtonSurface =
+            TTF_RenderText_Blended(smallFont, hitButtonText.c_str(), 0, black);
+        SDL_Texture* hitButtonTexture =
+            SDL_CreateTextureFromSurface(renderer, hitButtonSurface);
+        SDL_GetTextureSize(hitButtonTexture, &textW, &textH);
+        SDL_FRect hitButtonRect = {340 - (textW / 2), 520 - (textH / 2), textW,
+                                   textH};
+        SDL_RenderTexture(renderer, hitButtonTexture, nullptr, &hitButtonRect);
+        SDL_DestroySurface(hitButtonSurface);
+        SDL_DestroyTexture(hitButtonTexture);
 
-        // BUTTONS
-        SDL_FRect hitButton = {300, 500, 80, 40};
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &hitButton);
-        SDL_FRect standButton = {420, 500, 80, 40};
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &standButton);
+        // STAND BUTTON TEXT
+        std::string standButtonText = "STAND";
+        SDL_Surface* standButtonSurface = TTF_RenderText_Blended(
+            smallFont, standButtonText.c_str(), 0, black);
+        SDL_Texture* standButtonTexture =
+            SDL_CreateTextureFromSurface(renderer, standButtonSurface);
+        SDL_GetTextureSize(standButtonTexture, &textW, &textH);
+        SDL_FRect standButtonRect = {460 - (textW / 2), 520 - (textH / 2),
+                                     textW, textH};
+        SDL_RenderTexture(renderer, standButtonTexture, nullptr,
+                          &standButtonRect);
+        SDL_DestroySurface(standButtonSurface);
+        SDL_DestroyTexture(standButtonTexture);
+
+        // PLAY AGAIN BUTTON TEXT
+        std::string playAgainButtonText = "PLAY AGAIN";
         if (gameState == GameState::GAME_OVER)
         {
-            SDL_FRect playAgainButton = {360, 260, 80, 40};
-            SDL_SetRenderDrawColor(renderer, 250, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &playAgainButton);
+            SDL_Surface* playAgainTextSurface = TTF_RenderText_Blended(
+                smallFont, playAgainButtonText.c_str(), 0, black);
+            SDL_Texture* playAgainTextTexture =
+                SDL_CreateTextureFromSurface(renderer, playAgainTextSurface);
+            SDL_GetTextureSize(playAgainTextTexture, &textW, &textH);
+            SDL_FRect playAgainTextRect = {400 - (textW / 2), 280 - (textH / 2),
+                                           textW, textH};
+            SDL_RenderTexture(renderer, playAgainTextTexture, nullptr,
+                              &playAgainTextRect);
+            SDL_DestroySurface(playAgainTextSurface);
+            SDL_DestroyTexture(playAgainTextTexture);
         }
+
         SDL_RenderPresent(renderer);
 
         if (gameState == GameState::PLAYER_TURN)
