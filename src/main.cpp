@@ -1,3 +1,4 @@
+#include "Betting.h"
 #include "Card.h"
 #include "GameState.h"
 #include "Renderer.h"
@@ -10,11 +11,88 @@
 
 int main()
 {
+    // SCREEN
     int screenWidth = 1920;
     int screenHeight = 1080;
+
+    // BUTTONS
     int buttonWidth = 120;
     int buttonHeight = 50;
     int buttonGap = 10;
+
+    float dealButtonX = 210;
+    float dealButtonY = 575;
+
+    float standButtonX = (screenWidth / 2) + (buttonGap / 2);
+    float standButtonY = 1000 + (80 / 2) - (buttonHeight / 2);
+
+    float hitButtonX =
+        ((float(screenWidth / 2) - buttonWidth - (buttonGap / 2)));
+    float hitButtonY = 1000 + (80 / 2) - (buttonHeight / 2);
+
+    float offset = 55;
+    float playAgainButtonX = float(screenWidth / 2) - offset;
+    float playerAgainButtonY = float(screenHeight / 2);
+
+    std::string dealButtonText = "DEAL";
+    std::string hitButtonText = "HIT";
+    std::string standButtonText = "STAND";
+    std::string playAgainButtonText = "PLAY AGAIN";
+
+    // DRAG STATE
+    int dragChipValue = 0;
+    float dragX = 0;
+    float dragY = 0;
+    float draggedChipCol = 0;
+    float draggedChipRow = 0;
+
+    // BET ZONE
+    float betChipsX = 200;
+    float betChipsY = 700;
+    float betChipRenderX = 238;
+    float betChipRenderY = 675;
+    float betChipsDropZoneOffset = 300;
+
+    // CHIP PROPERTIES
+    float chipWidth = 64;
+    float chipHeight = 72;
+
+    std::vector<Chip> chips = {{1, 800, 920, chipWidth, chipHeight, 0, 0},
+                               {5, 880, 920, chipWidth, chipHeight, 1, 0},
+                               {25, 960, 920, 64, 72, 2, 0},
+                               {50, 1040, 920, 64, 72, 3, 0},
+                               {100, 1120, 920, 64, 72, 4, 1}};
+
+    std::vector<Chip> betChips = {};
+
+    // GAME STATE
+    GameState gameState = GameState::BETTING;
+
+    // PLAYER & DEALER STATE
+    int playerScore = 0;
+    int dealerScore = 0;
+    int playerChips = 1000;
+    int currentBet = 0;
+
+    // MOUSE
+    float mouseX, mouseY;
+
+    // BOOLS
+    bool running = true;
+    bool isDealerDone = false;
+    bool isPlayerBusted = false;
+    bool isDealerBusted = false;
+    bool isGameOverHandled = false;
+    bool isCardHidden = false;
+    bool isDragging = false;
+    bool isHovered;
+
+    // COLORS
+    SDL_Color green = {170, 255, 0, SDL_ALPHA_OPAQUE};
+    SDL_Color white = {255, 255, 255, 255};
+    SDL_Color black = {0, 0, 0, 255};
+    SDL_Color red = {255, 0, 0, 255};
+    SDL_Color gold = {255, 215, 0, 255};
 
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
@@ -38,33 +116,6 @@ int main()
 
     fillDeck(deck);
     shuffleDeck(deck);
-    dealCard(deck, dealerHand);
-    dealCard(deck, dealerHand);
-
-    dealCard(deck, playerHand);
-    dealCard(deck, playerHand);
-
-    GameState gameState = GameState::BETTING;
-    int playerChips = 1000;
-    int currentBet = 0;
-    int playerScore = calculateScore(playerHand);
-    int dealerScore = calculateScore(dealerHand);
-
-    std::cout << "Players score: " << playerScore << "\n";
-    std::cout << "Dealers score " << dealerScore << "\n";
-
-    bool running = true;
-    bool isDealerDone = false;
-    bool isPlayerBusted = false;
-    bool isDealerBusted = false;
-    bool isGameOverHandled = false;
-    bool isCardHidden = false;
-
-    // COLORS
-    SDL_Color green = {170, 255, 0, SDL_ALPHA_OPAQUE};
-    SDL_Color white = {255, 255, 255, 255};
-    SDL_Color black = {0, 0, 0, 255};
-    SDL_Color red = {255, 0, 0, 255};
 
     // LOADING ASSETS
     SDL_Texture* tableTexture =
@@ -109,9 +160,29 @@ int main()
         SDL_Log("Failed to load spades: %s", SDL_GetError());
     }
 
+    SDL_Texture* chipsTexture =
+        IMG_LoadTexture(renderer, "assets/images/Chips.png");
+    if (chipsTexture == nullptr)
+    {
+        SDL_Log("Failed to load spades: %s", SDL_GetError());
+    }
+
+    SDL_Texture* chipsOutlinedTexture =
+        IMG_LoadTexture(renderer, "assets/images/ChipsOutlined.png");
+    if (chipsOutlinedTexture == nullptr)
+    {
+        SDL_Log("Failed to load spades: %s", SDL_GetError());
+    }
+
     while (running)
     {
+
         // **RENDERING** //
+        SDL_Event event;
+        SDL_PollEvent(&event);
+
+        SDL_GetMouseState(&mouseX, &mouseY);
+
         SDL_SetRenderDrawColorFloat(renderer, 0.13f, 0.33f, 0.13f, 1.0f);
         SDL_RenderClear(renderer);
 
@@ -122,27 +193,45 @@ int main()
         SDL_SetRenderDrawColor(renderer, 14, 17, 17, 255);
         SDL_RenderFillRect(renderer, &buttonBarRect);
 
-        // **BUTTONS** //
+        // RENDER CHIPS
+
+        for (int i = 0; i < chips.size(); i++)
+        {
+            isHovered = isMouseOverChip(chips[i], mouseX, mouseY);
+            if (!isHovered)
+            {
+                renderChip(renderer, chipsTexture, chips[i]);
+            }
+            else if (isHovered)
+            {
+                renderChip(renderer, chipsOutlinedTexture, chips[i]);
+            }
+        }
+
+        for (int i = 0; i < betChips.size(); i++)
+        {
+            renderChip(renderer, chipsTexture, betChips[i]);
+        }
+
+        // DEAL BUTTON
+        if (gameState == GameState::BETTING)
+        {
+            renderButton(renderer, dealButtonX, dealButtonY, buttonWidth,
+                         buttonHeight, gold, dealButtonText, font, black);
+        }
 
         // HIT BUTTON
-        std::string hitButtonText = "HIT";
-        float hitButtonX =
-            ((float(screenWidth / 2) - buttonWidth - (buttonGap / 2)));
-        float hitButtonY = 1000 + (80 / 2) - (buttonHeight / 2);
+
         renderButton(renderer, hitButtonX, hitButtonY, buttonWidth,
                      buttonHeight, green, hitButtonText, font, black);
+
         // STAND BUTTON
-        std::string standButtonText = "STAND";
-        float standButtonX = (screenWidth / 2) + (buttonGap / 2);
-        float standButtonY = 1000 + (80 / 2) - (buttonHeight / 2);
+
         renderButton(renderer, standButtonX, standButtonY, buttonWidth,
                      buttonHeight, red, standButtonText, font, black);
 
         // PLAY AGAIN BUTTON
-        std::string playAgainButtonText = "PLAY AGAIN";
-        float offset = 55;
-        float playAgainButtonX = float(screenWidth / 2) - offset;
-        float playerAgainButtonY = float(screenHeight / 2);
+
         if (gameState == GameState::GAME_OVER)
         {
 
@@ -171,11 +260,24 @@ int main()
                        cardBackTexture, isCardHidden);
         }
 
+        if (isDragging)
+        {
+            dragX = mouseX;
+            dragY = mouseY;
+            Chip draggedChip = {dragChipValue,
+                                dragX - chipWidth / 2,
+                                dragY - chipHeight / 2,
+                                chipWidth,
+                                chipHeight,
+                                draggedChipCol,
+                                draggedChipRow};
+            renderChip(renderer, chipsTexture, draggedChip);
+        }
+
         SDL_RenderPresent(renderer);
 
         // EVENT HANDLING
-        SDL_Event event;
-        SDL_PollEvent(&event);
+
         if (event.type == SDL_EVENT_QUIT)
         {
             running = false;
@@ -183,13 +285,43 @@ int main()
 
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
         {
-            float mouseX = event.button.x;
-            float mouseY = event.button.y;
+
+            // BETTING CHIPS
+            for (int i = 0; i < chips.size(); i++)
+            {
+                isHovered = isMouseOverChip(chips[i], mouseX, mouseY);
+                if (isHovered && gameState == GameState::BETTING)
+                {
+                    isDragging = true;
+
+                    dragChipValue = chips[i].value;
+                    draggedChipCol = chips[i].col;
+                    draggedChipRow = chips[i].row;
+                }
+            }
+
+            // DEAL BUTTON CLICK DECETECTION
+            if (currentBet > 0 && mouseX >= dealButtonX &&
+                mouseX <= dealButtonX + buttonWidth && mouseY >= dealButtonY &&
+                mouseY <= dealButtonY + buttonHeight)
+            {
+                dealCard(deck, dealerHand);
+                dealCard(deck, dealerHand);
+
+                dealCard(deck, playerHand);
+                dealCard(deck, playerHand);
+
+                playerScore = calculateScore(playerHand);
+                dealerScore = calculateScore(dealerHand);
+
+                gameState = GameState::PLAYER_TURN;
+            }
 
             // HIT BUTTON CLICK DETECTION
             if (mouseX >= hitButtonX && mouseX <= hitButtonX + buttonWidth &&
                 mouseY >= hitButtonY && mouseY <= hitButtonY + buttonHeight &&
-                gameState != GameState::GAME_OVER)
+                gameState != GameState::GAME_OVER &&
+                gameState != GameState::BETTING)
             {
                 std::cout << "HIT!\n";
                 dealCard(deck, playerHand);
@@ -215,7 +347,8 @@ int main()
                 mouseX <= standButtonX + buttonWidth &&
                 mouseY >= standButtonY &&
                 mouseY <= standButtonY + buttonHeight &&
-                gameState != GameState::GAME_OVER)
+                gameState != GameState::GAME_OVER &&
+                gameState != GameState::BETTING)
             {
                 std::cout << "STAND!, DEALERS TURN!\n";
                 gameState = GameState::DEALER_TURN;
@@ -231,24 +364,47 @@ int main()
                 playerHand.cards.clear();
                 dealerHand.cards.clear();
                 deck.cards.clear();
+                betChips.clear();
+                currentBet = 0;
+
                 fillDeck(deck);
                 shuffleDeck(deck);
-
-                dealCard(deck, playerHand);
-                dealCard(deck, dealerHand);
-
-                dealCard(deck, playerHand);
-                dealCard(deck, dealerHand);
-
-                playerScore = calculateScore(playerHand);
-                dealerScore = calculateScore(dealerHand);
 
                 isDealerDone = false;
                 isPlayerBusted = false;
                 isDealerBusted = false;
                 isGameOverHandled = false;
 
-                gameState = GameState::PLAYER_TURN;
+                gameState = GameState::BETTING;
+            }
+        }
+
+        if (event.type == SDL_EVENT_MOUSE_BUTTON_UP)
+        {
+            if (isDragging && mouseX >= betChipsX &&
+                mouseX <= betChipsX + betChipsDropZoneOffset &&
+                mouseY >= betChipsY &&
+                mouseY <= betChipsY + betChipsDropZoneOffset)
+            {
+                currentBet += dragChipValue;
+                playerChips -= dragChipValue;
+                std::cout << "Current bet: " << currentBet << "\n";
+                std::cout << "Player chips: " << playerChips << "\n";
+                Chip newBetChip = {
+                    dragChipValue,
+                    betChipRenderX + ((float)betChips.size() * 5),
+                    betChipRenderY - ((float)betChips.size() * 5),
+                    chipWidth,
+                    chipHeight,
+                    draggedChipCol,
+                    draggedChipRow};
+
+                betChips.push_back(newBetChip);
+                isDragging = false;
+            }
+            else
+            {
+                isDragging = false;
             }
         }
 
@@ -292,10 +448,16 @@ int main()
                 }
                 else if (isDealerBusted)
                 {
+                    playerChips += currentBet * 2;
                     std::cout << "PLAYERS WIN - Dealers Busted\n";
+                }
+                else if (playerScore == 21 && playerScore != dealerScore)
+                {
+                    playerChips += currentBet + (int)(currentBet * 1.5);
                 }
                 else if (playerScore > dealerScore && !isPlayerBusted)
                 {
+                    playerChips += currentBet * 2;
                     std::cout << "PLAYER WINS\n";
                 }
                 else if (dealerScore > playerScore && !isDealerBusted)
@@ -304,12 +466,12 @@ int main()
                 }
                 else if (playerScore == dealerScore)
                 {
+                    playerChips += currentBet;
                     std::cout << "PUSH!\n";
                 }
             }
         }
     }
-
     TTF_CloseFont(font);
     TTF_Quit();
     SDL_Quit();
