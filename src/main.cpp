@@ -1,7 +1,8 @@
 #include "Betting.h"
-#include "Card.h"
-#include "GameState.h"
 #include "Renderer.h"
+#include "shared/Card.h"
+#include "shared/GameState.h"
+#include "shared/protocol.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
