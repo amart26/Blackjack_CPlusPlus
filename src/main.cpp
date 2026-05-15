@@ -1,172 +1,12 @@
+#include "Card.h"
+#include "GameState.h"
+#include "Renderer.h"
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-#include <algorithm>
 #include <iostream>
-#include <random>
 #include <string>
-#include <vector>
-
-enum class GameState
-{
-    PLAYER_TURN,
-    DEALER_TURN,
-    GAME_OVER
-};
-
-enum class Suit
-{
-    HEARTS,
-    DIAMONDS,
-    CLUBS,
-    SPADES
-};
-
-enum class Rank
-{
-    ACE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    TEN,
-    JACK,
-    QUEEN,
-    KING
-};
-
-struct Card
-{
-    Suit suit;
-    Rank rank;
-};
-
-struct Deck
-{
-    std::vector<Card> cards;
-};
-
-struct Hand
-{
-    std::vector<Card> cards;
-};
-
-void fillDeck(Deck& deck)
-{
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 13; j++)
-        {
-            deck.cards.push_back(
-                Card{static_cast<Suit>(i), static_cast<Rank>(j)});
-        }
-    }
-}
-
-void shuffleDeck(Deck& deck)
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::shuffle(deck.cards.begin(), deck.cards.end(), gen);
-}
-
-void dealCard(Deck& deck, Hand& hand)
-{
-    hand.cards.push_back(deck.cards.back());
-    deck.cards.pop_back();
-}
-
-int calculateScore(const Hand& hand)
-{
-    int sum = 0;
-    int aceCount = 0;
-    for (int i = 0; i < hand.cards.size(); i++)
-    {
-        switch (hand.cards[i].rank)
-        {
-        case Rank::JACK:
-            sum += 10;
-            break;
-        case Rank::QUEEN:
-            sum += 10;
-            break;
-        case Rank::KING:
-            sum += 10;
-            break;
-        case Rank::ACE:
-            aceCount++;
-            sum += 11;
-            break;
-        default:
-            sum += static_cast<int>(hand.cards[i].rank) + 1;
-            break;
-        }
-    }
-
-    while (sum > 21 && aceCount != 0)
-    {
-        aceCount--;
-        sum -= 10;
-    }
-    return sum;
-}
-
-SDL_FRect getCardSourceRect(const Card& card)
-{
-    int rankIndex = static_cast<int>(card.rank);
-    int column = rankIndex % 5;
-    int row = rankIndex / 5;
-    float x = column * 88;
-    float y = row * 124;
-    return SDL_FRect{x, y, 88, 124};
-}
-
-void renderCard(SDL_Renderer* renderer, SDL_Texture* texture, const Card& card,
-                float x, float y)
-{
-    SDL_FRect cardRect = getCardSourceRect(card);
-    SDL_FRect destRect = {x, y, 88, 124};
-    SDL_RenderTexture(renderer, texture, &cardRect, &destRect);
-}
-
-void renderHand(SDL_Renderer* renderer, const Hand& hand, float y,
-                SDL_Texture* heartsTexture, SDL_Texture* clubsTexture,
-                SDL_Texture* spadesTexture, SDL_Texture* diamondsTexture)
-{
-    for (int i = 0; i < hand.cards.size(); i++)
-    {
-
-        switch (hand.cards[i].suit)
-        {
-        case Suit::HEARTS:
-            renderCard(renderer, heartsTexture, hand.cards[i], 200 + (i * 100),
-                       y);
-            break;
-
-        case Suit::CLUBS:
-            renderCard(renderer, clubsTexture, hand.cards[i], 200 + (i * 100),
-                       y);
-            break;
-
-        case Suit::SPADES:
-            renderCard(renderer, spadesTexture, hand.cards[i], 200 + (i * 100),
-                       y);
-            break;
-        case Suit::DIAMONDS:
-            renderCard(renderer, diamondsTexture, hand.cards[i],
-                       200 + (i * 100), y);
-            break;
-
-        default:
-            break;
-        }
-    }
-}
 
 int main()
 {
@@ -331,77 +171,31 @@ int main()
                    spadesTexture, diamondsTexture);
 
         // GLOBAL TEXT
-        float textW, textH;
         SDL_Color white = {255, 255, 255, 255};
         SDL_Color black = {0, 0, 0, 255};
 
         // PLAYER SCORE TEXT
         std::string playerText = "Player " + std::to_string(playerScore);
-        SDL_Surface* playerSurface =
-            TTF_RenderText_Blended(font, playerText.c_str(), 0, white);
-        SDL_Texture* playerTexture =
-            SDL_CreateTextureFromSurface(renderer, playerSurface);
-
-        SDL_GetTextureSize(playerTexture, &textW, &textH);
-        SDL_FRect playerTextRect = {50, 400, textW, textH};
-        SDL_RenderTexture(renderer, playerTexture, nullptr, &playerTextRect);
-        SDL_DestroySurface(playerSurface);
-        SDL_DestroyTexture(playerTexture);
+        renderText(renderer, font, playerText, 50, 400, white);
 
         // DEALER SCORE TEXT
         std::string dealerText = "Dealer: " + std::to_string(dealerScore);
-        SDL_Surface* dealerSurface =
-            TTF_RenderText_Blended(font, dealerText.c_str(), 0, white);
-        SDL_Texture* dealerTexture =
-            SDL_CreateTextureFromSurface(renderer, dealerSurface);
-        SDL_GetTextureSize(dealerTexture, &textW, &textH);
-        SDL_FRect dealerTextRect = {50, 100, textW, textH};
-        SDL_RenderTexture(renderer, dealerTexture, nullptr, &dealerTextRect);
-        SDL_DestroySurface(dealerSurface);
-        SDL_DestroyTexture(dealerTexture);
+        renderText(renderer, font, dealerText, 50, 100, white);
 
         // HIT BUTTON TEXT
         std::string hitButtonText = "HIT";
-        SDL_Surface* hitButtonSurface =
-            TTF_RenderText_Blended(smallFont, hitButtonText.c_str(), 0, black);
-        SDL_Texture* hitButtonTexture =
-            SDL_CreateTextureFromSurface(renderer, hitButtonSurface);
-        SDL_GetTextureSize(hitButtonTexture, &textW, &textH);
-        SDL_FRect hitButtonRect = {340 - (textW / 2), 520 - (textH / 2), textW,
-                                   textH};
-        SDL_RenderTexture(renderer, hitButtonTexture, nullptr, &hitButtonRect);
-        SDL_DestroySurface(hitButtonSurface);
-        SDL_DestroyTexture(hitButtonTexture);
+        renderText(renderer, font, hitButtonText, 320, 503, black);
 
         // STAND BUTTON TEXT
         std::string standButtonText = "STAND";
-        SDL_Surface* standButtonSurface = TTF_RenderText_Blended(
-            smallFont, standButtonText.c_str(), 0, black);
-        SDL_Texture* standButtonTexture =
-            SDL_CreateTextureFromSurface(renderer, standButtonSurface);
-        SDL_GetTextureSize(standButtonTexture, &textW, &textH);
-        SDL_FRect standButtonRect = {460 - (textW / 2), 520 - (textH / 2),
-                                     textW, textH};
-        SDL_RenderTexture(renderer, standButtonTexture, nullptr,
-                          &standButtonRect);
-        SDL_DestroySurface(standButtonSurface);
-        SDL_DestroyTexture(standButtonTexture);
+        renderText(renderer, smallFont, standButtonText, 435, 509, black);
 
         // PLAY AGAIN BUTTON TEXT
         std::string playAgainButtonText = "PLAY AGAIN";
         if (gameState == GameState::GAME_OVER)
         {
-            SDL_Surface* playAgainTextSurface = TTF_RenderText_Blended(
-                smallFont, playAgainButtonText.c_str(), 0, black);
-            SDL_Texture* playAgainTextTexture =
-                SDL_CreateTextureFromSurface(renderer, playAgainTextSurface);
-            SDL_GetTextureSize(playAgainTextTexture, &textW, &textH);
-            SDL_FRect playAgainTextRect = {400 - (textW / 2), 280 - (textH / 2),
-                                           textW, textH};
-            SDL_RenderTexture(renderer, playAgainTextTexture, nullptr,
-                              &playAgainTextRect);
-            SDL_DestroySurface(playAgainTextSurface);
-            SDL_DestroyTexture(playAgainTextTexture);
+            renderText(renderer, smallFont, playAgainButtonText, 355, 268,
+                       black);
         }
 
         SDL_RenderPresent(renderer);
