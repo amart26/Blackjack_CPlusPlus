@@ -3,6 +3,7 @@
 A 2D Blackjack game built with C++ and SDL3, developed as a portfolio project to demonstrate systems programming, game architecture, and graphics programming fundamentals.
 
 ![C++](https://img.shields.io/badge/C++-17-blue) ![SDL3](https://img.shields.io/badge/SDL-3.0-green) ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-lightgrey)
+
 ![Gameplay Screenshot](screenshots/gameplay.png)
 
 ## Download & Play
