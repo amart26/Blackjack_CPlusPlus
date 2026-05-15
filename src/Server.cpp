@@ -84,6 +84,53 @@ void Server::startGamePhase()
     sendMessage(clientSockets[0], yourTurnMessage);
 }
 
+void Server::nextPlayerTurn()
+{
+    currentPlayerTurn++;
+    if (currentPlayerTurn >= playerCount)
+    {
+        Message dealerTurnMessage;
+        dealerTurnMessage.type = MessageType::DEALER_TURN;
+        dealerTurnMessage.data = 0;
+        broadcastMessage(dealerTurnMessage);
+    }
+    else
+    {
+
+        Message yourTurnMessage;
+        yourTurnMessage.type = MessageType::YOUR_TURN;
+        yourTurnMessage.data = 0;
+        yourTurnMessage.playerId = currentPlayerTurn;
+        sendMessage(clientSockets[currentPlayerTurn], yourTurnMessage);
+    }
+}
+
+void Server::runDealerTurn()
+{
+    dealerScore = calculateScore(dealerHand);
+    while (dealerScore < 17)
+    {
+        dealCard(deck, dealerHand);
+        dealerScore = calculateScore(dealerHand);
+    }
+    if (dealerScore > 21)
+    {
+        Message gameOverMessage;
+        gameOverMessage.type = MessageType::GAME_OVER;
+        gameOverMessage.data = 0;
+
+        broadcastMessage(gameOverMessage);
+    }
+    else if (dealerScore >= 17 && dealerScore <= 21)
+    {
+        Message gameOverMessage;
+        gameOverMessage.type = MessageType::GAME_OVER;
+        gameOverMessage.data = 0;
+
+        broadcastMessage(gameOverMessage);
+    }
+}
+
 void handlePlayer(SocketType socket, int playerId)
 {
     while (true)

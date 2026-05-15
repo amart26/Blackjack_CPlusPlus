@@ -18,6 +18,7 @@ struct Server
     int currentPlayerTurn;
     int playerCount;
     int maxPlayers = 4;
+    int dealerScore = 0;
 
     void startServer(int port);
     void acceptPlayers();
@@ -26,6 +27,8 @@ struct Server
     void startBettingPhase();
     void startGamePhase();
     void nextPlayerTurn();
+
+    void runDealerTurn();
 };
 
 void handlePlayer(SocketType socket, int playerId);
