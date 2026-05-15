@@ -73,6 +73,7 @@ int main()
     int dealerScore = 0;
     int playerChips = 1000;
     int currentBet = 0;
+    std::string playerChipsText;
 
     // MOUSE
     float mouseX, mouseY;
@@ -272,8 +273,8 @@ int main()
                                 draggedChipRow};
             renderChip(renderer, chipsTexture, draggedChip);
         }
-        std::string playerScoreText = "Player ScoreL: " + playerScore;
-        renderText(renderer, font, playerScoreText, 100, 1000, white);
+        playerChipsText = "Player Chips: " + std::to_string(playerChips);
+        renderText(renderer, font, playerChipsText, 100, 1025, white);
 
         SDL_RenderPresent(renderer);
 
