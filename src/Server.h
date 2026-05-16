@@ -16,7 +16,7 @@ struct Server
     Hand dealerHand;
 
     int currentPlayerTurn;
-    int playerCount;
+    int playerCount = 0;
     int maxPlayers = 4;
     int dealerScore = 0;
     int playerScore = 0;
