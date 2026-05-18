@@ -1,6 +1,95 @@
 CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\Client.cpp \
  C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\Client.h \
+ C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\Betting.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_stdinc.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_platform_defines.h \
+ C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdarg.h \
+ C:/mingw64/x86_64-w64-mingw32/include/stdarg.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
+ C:/mingw64/x86_64-w64-mingw32/include/vadefs.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
+ C:/mingw64/x86_64-w64-mingw32/include/string.h \
+ C:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
+ C:/mingw64/x86_64-w64-mingw32/include/wchar.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt_stdio_config.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt_wconio.h \
+ C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
+ C:/mingw64/x86_64-w64-mingw32/include/stddef.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sec_api/wconio_s.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt_wstdlib.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt_wctype.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h \
+ C:/mingw64/x86_64-w64-mingw32/include/_mingw_stat64.h \
+ C:/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
+ C:/mingw64/x86_64-w64-mingw32/include/sec_api/wchar_s.h \
+ C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdint.h \
+ C:/mingw64/x86_64-w64-mingw32/include/stdint.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_begin_code.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_close_code.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_assert.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_asyncio.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_atomic.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_audio.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_endian.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_error.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_mutex.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_thread.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_properties.h \
+ C:/mingw64/x86_64-w64-mingw32/include/process.h \
+ C:/mingw64/x86_64-w64-mingw32/include/corecrt_startup.h \
+ C:/mingw64/x86_64-w64-mingw32/include/sys/types.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_iostream.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_bits.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_blendmode.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_camera.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_pixels.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_surface.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_rect.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_clipboard.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_cpuinfo.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_dialog.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_video.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_dlopennote.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_events.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_gamepad.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_guid.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_joystick.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_power.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_sensor.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_keyboard.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_keycode.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_scancode.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_mouse.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_pen.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_touch.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_filesystem.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_gpu.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_haptic.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_hidapi.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_hints.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_init.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_loadso.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_locale.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_log.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_messagebox.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_metal.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_misc.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_platform.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_process.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_render.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_storage.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_system.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_time.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_timer.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_tray.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_version.h \
+ C:/SDL3/x86_64-w64-mingw32/include/SDL3/SDL_oldnames.h \
  C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\shared/GameState.h \
  C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\shared/Protocol.h \
  C:\Users\amart\OneDrive\Documents\Coding\BlackJack\src\shared/Card.h \
@@ -53,14 +142,6 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/include/c++/15.2.0/bits/vector.tcc \
  C:/mingw64/include/c++/15.2.0/bits/memory_resource.h \
  C:/mingw64/include/c++/15.2.0/cstddef \
- C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stddef.h \
- C:/mingw64/x86_64-w64-mingw32/include/stddef.h \
- C:/mingw64/x86_64-w64-mingw32/include/crtdefs.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw_mac.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw_secapi.h \
- C:/mingw64/x86_64-w64-mingw32/include/vadefs.h \
  C:/mingw64/include/c++/15.2.0/bits/uses_allocator.h \
  C:/mingw64/include/c++/15.2.0/bits/uses_allocator_args.h \
  C:/mingw64/include/c++/15.2.0/tuple \
@@ -69,9 +150,6 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/windows.h \
  C:/mingw64/x86_64-w64-mingw32/include/sdkddkver.h \
  C:/mingw64/x86_64-w64-mingw32/include/excpt.h \
- C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdarg.h \
- C:/mingw64/x86_64-w64-mingw32/include/stdarg.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
  C:/mingw64/x86_64-w64-mingw32/include/windef.h \
  C:/mingw64/x86_64-w64-mingw32/include/winapifamily.h \
  C:/mingw64/x86_64-w64-mingw32/include/minwindef.h \
@@ -81,13 +159,10 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/x86_64-w64-mingw32/include/driverspecs.h \
  C:/mingw64/x86_64-w64-mingw32/include/winnt.h \
  C:/mingw64/x86_64-w64-mingw32/include/ctype.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt_wctype.h \
  C:/mingw64/x86_64-w64-mingw32/include/apiset.h \
  C:/mingw64/x86_64-w64-mingw32/include/psdk_inc/intrin-impl.h \
  C:/mingw64/x86_64-w64-mingw32/include/basetsd.h \
  C:/mingw64/x86_64-w64-mingw32/include/guiddef.h \
- C:/mingw64/x86_64-w64-mingw32/include/string.h \
- C:/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/x86intrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/x86gprintrin.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/ia32intrin.h \
@@ -135,7 +210,6 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/include/c++/15.2.0/stdlib.h \
  C:/mingw64/include/c++/15.2.0/cstdlib \
  C:/mingw64/x86_64-w64-mingw32/include/stdlib.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt_wstdlib.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/limits.h \
  C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/syslimits.h \
  C:/mingw64/x86_64-w64-mingw32/include/limits.h \
@@ -356,14 +430,6 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/include/c++/15.2.0/bits/stringfwd.h \
  C:/mingw64/include/c++/15.2.0/bits/postypes.h \
  C:/mingw64/include/c++/15.2.0/cwchar \
- C:/mingw64/x86_64-w64-mingw32/include/wchar.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt_stdio_config.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt_wconio.h \
- C:/mingw64/x86_64-w64-mingw32/include/sec_api/wconio_s.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw_off_t.h \
- C:/mingw64/x86_64-w64-mingw32/include/_mingw_stat64.h \
- C:/mingw64/x86_64-w64-mingw32/include/swprintf.inl \
- C:/mingw64/x86_64-w64-mingw32/include/sec_api/wchar_s.h \
  C:/mingw64/include/c++/15.2.0/exception \
  C:/mingw64/include/c++/15.2.0/bits/exception_ptr.h \
  C:/mingw64/include/c++/15.2.0/bits/cxxabi_init_exception.h \
@@ -382,9 +448,6 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr.h \
  C:/mingw64/include/c++/15.2.0/x86_64-w64-mingw32/bits/gthr-default.h \
  C:/mingw64/x86_64-w64-mingw32/include/pthread.h \
- C:/mingw64/x86_64-w64-mingw32/include/sys/types.h \
- C:/mingw64/x86_64-w64-mingw32/include/process.h \
- C:/mingw64/x86_64-w64-mingw32/include/corecrt_startup.h \
  C:/mingw64/x86_64-w64-mingw32/include/signal.h \
  C:/mingw64/x86_64-w64-mingw32/include/pthread_signal.h \
  C:/mingw64/x86_64-w64-mingw32/include/time.h \
@@ -432,7 +495,5 @@ CMakeFiles/blackjack.dir/src/Client.cpp.obj: \
  C:/mingw64/include/c++/15.2.0/bits/chrono.h \
  C:/mingw64/include/c++/15.2.0/ratio \
  C:/mingw64/include/c++/15.2.0/cstdint \
- C:/mingw64/lib/gcc/x86_64-w64-mingw32/15.2.0/include/stdint.h \
- C:/mingw64/x86_64-w64-mingw32/include/stdint.h \
  C:/mingw64/include/c++/15.2.0/limits C:/mingw64/include/c++/15.2.0/ctime \
  C:/mingw64/include/c++/15.2.0/bits/parse_numbers.h
